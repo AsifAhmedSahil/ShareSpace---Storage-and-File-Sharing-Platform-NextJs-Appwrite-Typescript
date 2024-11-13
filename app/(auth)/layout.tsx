@@ -34,13 +34,16 @@ const layout = ({children}:{children: React.ReactNode}) => {
       </section>
       <section className="flex flex-1 flex-col items-center bg-white p-4 py-10 lg:justify-center lg:p-10 lg:py-0">
         <div className="mb-16 lg:hidden">
+        <div className='flex space-x-3 items-center font-bold '>
           <Image
-            src="/assets/icons/logo-full-brand.svg"
+            src="/favicon.ico"
             alt="logo"
-            width={224}
-            height={82}
-            className="h-auto w-[200px] lg:w-[250px]"
+            width={55}
+            height={55}
+            className="h-auto"
           />
+          <div className='text-Black text-2xl'>SpaceShare</div>
+          </div>
         </div>
 
         {children}
