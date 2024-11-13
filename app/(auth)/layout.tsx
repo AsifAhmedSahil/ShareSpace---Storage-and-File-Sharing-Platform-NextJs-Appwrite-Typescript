@@ -6,13 +6,16 @@ const layout = ({children}:{children: React.ReactNode}) => {
     <div className='flex min-h-screen'>
          <section className="hidden w-1/2 items-center justify-center bg-brand p-10 lg:flex xl:w-2/5">
         <div className="flex max-h-[800px] max-w-[430px] flex-col justify-center space-y-12">
+          <div className='flex space-x-3 items-center font-bold '>
           <Image
             src="/favicon.ico"
             alt="logo"
-            width={224}
-            height={82}
+            width={55}
+            height={55}
             className="h-auto"
           />
+          <div className='text-white text-4xl'>SpaceShare</div>
+          </div>
 
           <div className="space-y-5 text-white">
             <h1 className="h1">Manage your files the best way</h1>
