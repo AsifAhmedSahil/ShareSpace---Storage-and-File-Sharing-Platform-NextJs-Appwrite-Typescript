@@ -1,10 +1,11 @@
 "use server";
 
 import { ID, Query } from "node-appwrite";
-import { createAdminClient } from "../appwrite";
+import { createAdminClient, createSessionClient } from "../appwrite";
 import { appwriteConfig } from "../appwrite/config";
 import { parseStringify } from "../utils";
 import { cookies } from "next/headers";
+import { avatarPlaceholderUrl } from "@/constants";
 
 const getUserByEmail = async (email: string) => {
   const { databases } = await createAdminClient();
@@ -58,8 +59,7 @@ export const createAccount = async ({
       {
         fullName,
         email,
-        avatar:
-          "https://media.istockphoto.com/id/1337144146/vector/default-avatar-profile-icon-vector.jpg?s=612x612&w=0&k=20&c=BIbFwuv7FxTWvh5S3vB6bkT0Qv8Vn8N5Ffseq84ClGI=",
+        avatar: avatarPlaceholderUrl,
         accountId,
       }
     );
@@ -68,24 +68,48 @@ export const createAccount = async ({
   return parseStringify({ accountId });
 };
 
-export const verifySecret = async ({ accountId, password }: { accountId: string; password: string }) => {
+export const verifySecret = async ({
+  accountId,
+  password,
+}: {
+  accountId: string;
+  password: string;
+}) => {
   try {
     const { account } = await createAdminClient();
 
     const session = await account.createSession(accountId, password);
+    console.log(session,"*************")
 
-    const cookieStore = await cookies();
-    cookieStore.set("appwrite-session", session.secret,{
-      path:"/",
-      httpOnly:true,
-      sameSite:"strict",
-      secure:true
-    }); 
+    cookies.set("appwrite-session", session.secret, {
+      path: "/",
+      httpOnly: true,
+      sameSite: "strict",
+      secure: true,
+    });
 
-    return parseStringify({sessionId:session.$id})
-
+    return parseStringify({ sessionId: session.$id });
   } catch (error) {
-    handleError(error, "Failed To verify OTP!");
+    handleError(error, "Failed to verify OTP");
   }
 };
 
+export const getCurrentUser = async () => {
+  try {
+    const { databases, account } = await createSessionClient();
+
+    const result = await account.get();
+
+    const user = await databases.listDocuments(
+      appwriteConfig.databaseId,
+      appwriteConfig.usersCollectionId,
+      [Query.equal("accountId", result.$id)],
+    );
+
+    if (user.total <= 0) return null;
+
+    return parseStringify(user.documents[0]);
+  } catch (error) {
+    console.log(error);
+  }
+};
