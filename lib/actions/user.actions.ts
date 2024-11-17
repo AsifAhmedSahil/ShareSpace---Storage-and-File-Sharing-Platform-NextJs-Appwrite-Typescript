@@ -112,5 +112,5 @@ export const getCurrentUser = async () => {
   } catch (error) {
     console.log(error);
   }
-  update
+  
 };
