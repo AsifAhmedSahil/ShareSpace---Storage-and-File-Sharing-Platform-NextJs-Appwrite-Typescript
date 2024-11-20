@@ -4,8 +4,9 @@ import { ID, Query } from "node-appwrite";
 import { createAdminClient, createSessionClient } from "../appwrite";
 import { appwriteConfig } from "../appwrite/config";
 import { parseStringify } from "../utils";
-import { cookies } from "next/headers";
+
 import { avatarPlaceholderUrl } from "@/constants";
+import { cookies } from "next/headers";
 
 const getUserByEmail = async (email: string) => {
   const { databases } = await createAdminClient();
@@ -79,9 +80,8 @@ export const verifySecret = async ({
     const { account } = await createAdminClient();
 
     const session = await account.createSession(accountId, password);
-    console.log(session,"*************")
 
-    cookies.set("appwrite-session", session.secret, {
+    (await cookies()).set("appwrite-session", session.secret, {
       path: "/",
       httpOnly: true,
       sameSite: "strict",
@@ -112,5 +112,5 @@ export const getCurrentUser = async () => {
   } catch (error) {
     console.log(error);
   }
-  // check update
+  
 };
