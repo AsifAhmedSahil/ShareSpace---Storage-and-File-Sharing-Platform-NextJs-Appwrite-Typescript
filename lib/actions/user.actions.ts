@@ -8,6 +8,7 @@ import { parseStringify } from "../utils";
 import { avatarPlaceholderUrl } from "@/constants";
 import { cookies } from "next/headers";
 
+
 const getUserByEmail = async (email: string) => {
   const { databases } = await createAdminClient();
 
@@ -78,14 +79,19 @@ export const verifySecret = async ({
 }) => {
   try {
     const { account } = await createAdminClient();
+    console.log(account,"account************")
 
     const session = await account.createSession(accountId, password);
+    console.log(session.$id,"*************sesion")
 
-    (await cookies()).set("appwrite-session", session.secret, {
+    const localcookies = await cookies()
+    
+
+    localcookies.set("appwrite-session", session.$id, {
       path: "/",
       httpOnly: true,
       sameSite: "strict",
-      secure: true,
+      secure: false,
     });
 
     return parseStringify({ sessionId: session.$id });
@@ -112,5 +118,5 @@ export const getCurrentUser = async () => {
   } catch (error) {
     console.log(error);
   }
-  
 };
+

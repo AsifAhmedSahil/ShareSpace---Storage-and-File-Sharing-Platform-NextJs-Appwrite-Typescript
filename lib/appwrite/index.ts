@@ -43,7 +43,7 @@ export const createAdminClient = async () => {
     get storage() {
       return new Storage(client);
     },
-    get avatar() {
+    get avatars() {
       return new Avatars(client);
     },
   };

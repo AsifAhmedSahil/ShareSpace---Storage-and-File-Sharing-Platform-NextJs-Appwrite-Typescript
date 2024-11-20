@@ -35,8 +35,9 @@ const OTPModal = ({
   const handleSubmit = async (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
     setIsLoading(true);
-
+    
     try {
+      console.log(accountId,password,"**************OTP modal")
       const sessionId = await verifySecret({accountId,password})
       if(sessionId) router.push("/")
     } catch (error) {
