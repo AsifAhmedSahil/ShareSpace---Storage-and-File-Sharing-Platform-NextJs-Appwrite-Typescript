@@ -41,7 +41,7 @@ const MobileNavigation = () => {
           <SheetTitle>
             <div className="header-user">
               <Image
-                src="/assets/icons/logo-full-brand.svg"
+                src="https://img.freepik.com/free-psd/3d-illustration-person-with-sunglasses_23-2149436188.jpg"
                 alt="avatar"
                 width={44}
                 height={44}
