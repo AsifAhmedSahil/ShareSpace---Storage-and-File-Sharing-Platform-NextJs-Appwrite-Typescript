@@ -41,6 +41,7 @@ export const uploadFiles = async ({
         accountId,
         users:[],
         bucketFileId: bucketFile.$id,
+        bucketFileId: bucketFile.$id,
 
     }
 
